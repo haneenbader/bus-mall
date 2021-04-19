@@ -55,7 +55,7 @@ new Product('wine-glass', '../img/wine-glass.jpg')
 console.log(Product.allProduct);
 
 let previousProduct = [];
-
+let arrayOFShown = [];
 function renderThreeProduct() {
     leftIndex = generateRandomIndex();
     middleIndex = generateRandomIndex();
@@ -126,6 +126,7 @@ function renderList() {
     let ul = document.getElementById('unList');
     for (let i = 0; i < Product.allProduct.length; i++) {
         arrayOfVotes.push(Product.allProduct[i].votes);
+        arrayOFShown.push(Product.allProduct[i].timesShow);
         let li = document.createElement('li');
         ul.appendChild(li);
         li.textContent = ` ${Product.allProduct[i].name} it is show  ${Product.allProduct[i].timesShow} times and its have ${Product.allProduct[i].votes} votes . `;
@@ -143,19 +144,25 @@ function showingList() {
     }
 }
 function chart() {
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let  myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: arrayOfName,
             datasets: [{
                 label: ' Votes product',
                 data: arrayOfVotes,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                backgroundColor: 'rgba(235, 151, 78, 1)',
                 borderWidth: 1
-            }]
-        },
+                },{
+                label: ' shown product',
+                data: arrayOFShown,
+                backgroundColor: 'rgba(149, 165, 166, 1)',
+                borderWidth: 1
+              }
+            ]
+        }
 
-    });
+    })
 }
 
