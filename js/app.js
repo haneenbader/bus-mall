@@ -13,6 +13,9 @@ Product.allProduct = [];
 let leftProductElement = document.getElementById('left-image');
 let middleProductElement = document.getElementById('middle-image');
 let rightProductElement = document.getElementById('right-image');
+let container = document.getElementById('sec-one');
+let button = document.getElementById('btn');
+
 
 
 
@@ -60,31 +63,27 @@ function renderThreeProduct() {
         rightIndex = generateRandomIndex();
     }
     leftProductElement.src = Product.allProduct[leftIndex].source;
-    middleProductElement.src = Product.allProduct[middleIndex].source;
-    rightProductElement.src = Product.allProduct[rightIndex].source;
     Product.allProduct[leftIndex].timesShow++;
+    middleProductElement.src = Product.allProduct[middleIndex].source;
     Product.allProduct[middleIndex].timesShow++;
+    rightProductElement.src = Product.allProduct[rightIndex].source;
     Product.allProduct[rightIndex].timesShow++;
-    console.log(Product.allProduct[leftIndex]);
-    console.log(Product.allProduct[middleIndex]);
-    console.log(Product.allProduct[rightIndex]);
+    // console.log(Product.allProduct[leftIndex]);
+    // console.log(Product.allProduct[middleIndex]);
+    // console.log(Product.allProduct[rightIndex]);
 }
 renderThreeProduct();
 
 
-leftProductElement.addEventListener('click', handleClicking);
-middleProductElement.addEventListener('click', handleClicking);
-rightProductElement.addEventListener('click', handleClicking);
+container.addEventListener('click', handleClicking);
+
 
 function handleClicking(event) {
     count++;
     if (maxAttempt >= count) {
         renderThreeProduct();
     } else {
-        renderList();
-        leftProductElement.removeEventListener('click', handleClicking);
-        middleProductElement.removeEventListener('click', handleClicking);
-        rightProductElement.removeEventListener('click', handleClicking);
+        container.removeEventListener('click', handleClicking);
     }
 }
 
@@ -95,9 +94,15 @@ function renderList() {
         let li = document.createElement('li');
         ul.appendChild(li);
         li.textContent = ` ${Product.allProduct[i].name} it is show  ${Product.allProduct[i].timesShow} times `;
-
     }
-
 }
 
+
+button.addEventListener('click', showingList);
+function showingList() {
+    if (count > maxAttempt) {
+        renderList();
+        button.removeEventListener('click', showingList)
+    }
+}
 
