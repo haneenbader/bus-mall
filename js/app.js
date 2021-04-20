@@ -73,23 +73,9 @@ function renderThreeProduct() {
     Product.allProduct[middleIndex].timesShow++;
     rightProductElement.src = Product.allProduct[rightIndex].source;
     Product.allProduct[rightIndex].timesShow++;
-    // console.log(Product.allProduct[leftIndex]);
-    // console.log(Product.allProduct[middleIndex]);
-    // console.log(Product.allProduct[rightIndex]);
-    //     for (let i = 0; i < previousProduct.length; i++) {
-    //         while (previousProduct[i] === Product.allProduct[leftIndex].name || previousProduct[i] === Product.allProduct[middleIndex].name || previousProduct[i] === Product.allProduct[rightIndex.name]) {
-    // console.log(Product.allProduct[leftIndex].name);
-    // console.log(previousProduct);
-    //             leftIndex = generateRandomIndex();
-    //             middleIndex = generateRandomIndex();
-    //             rightIndex = generateRandomIndex();
-    //         }
-    //     }
-    //     console.log(Product.allProduct[leftIndex].name);
-    //     console.log(previousProduct);
-    previousProduct[0] = leftIndex;
-    previousProduct[1] = middleIndex;
-    previousProduct[2] = rightIndex;
+
+    previousProduct = [leftIndex, middleIndex, rightIndex];
+
 }
 
 renderThreeProduct();
@@ -110,16 +96,14 @@ function handleClicking(event) {
             counts--;
         }
         renderThreeProduct();
-
-        // previousProduct = [Product.allProduct[leftIndex].name, Product.allProduct[middleIndex].name, Product.allProduct[rightIndex].name];
-        // console.log(previousProduct);
-
     }
     else {
 
         container.removeEventListener('click', handleClicking);
     }
 }
+
+
 
 let arrayOfVotes = [];
 function renderList() {
@@ -132,20 +116,47 @@ function renderList() {
         li.textContent = ` ${Product.allProduct[i].name} it is show  ${Product.allProduct[i].timesShow} times and its have ${Product.allProduct[i].votes} votes . `;
     }
 }
+console.log(arrayOfVotes);
+
+
+function saveToLs() {
+    let allProductSaved = JSON.stringify(Product.allProduct);
+    localStorage.setItem('allProductSaved', allProductSaved);
+
+}
+
+
+function gettingVotesFromLs() {
+    let dataVotes = localStorage.getItem('allProductSaved')
+    console.log(dataVotes);
+   let  previousArrayOfVotes = JSON.parse(dataVotes);
+    if (previousArrayOfVotes !== null) {
+        Product.allProduct = previousArrayOfVotes;
+    }
+}
+gettingVotesFromLs();
+
+
 
 
 button.addEventListener('click', showingList);
 
 function showingList() {
     if (count > maxAttempt) {
+        saveToLs();
         renderList();
         chart();
         button.removeEventListener('click', showingList)
+       
     }
 }
+
+
+
+
 function chart() {
     let ctx = document.getElementById('myChart').getContext('2d');
-    let  myChart = new Chart(ctx, {
+    let myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: arrayOfName,
@@ -154,12 +165,12 @@ function chart() {
                 data: arrayOfVotes,
                 backgroundColor: 'rgba(235, 151, 78, 1)',
                 borderWidth: 1
-                },{
+            }, {
                 label: ' shown product',
                 data: arrayOFShown,
                 backgroundColor: 'rgba(149, 165, 166, 1)',
                 borderWidth: 1
-              }
+            }
             ]
         }
 
